@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nhật kí kỹ sư sáp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday learning, for grade-6 students and their teacher
+   IDEA a lab notebook for “wax engineers”: five crayon-shaped stations, each one a page of the notebook
+   PICTURE the crayon station rail (fills as work is done) and, at the data station, a live temperature–time chart
+   COLOUR white ground, deep teal ink fields, crayon orange accent, crayon colours mark the five stations
+   TYPE Baloo 2 display + Be Vietnam Pro text (both full Vietnamese)
+   LAYOUT laptop: title band with rail across; one station page below in a two-column grid; phone: title, rail (scrolls), single column */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0b1d24);--ink:light-dark(#10262e,#e9f3f5);--soft:light-dark(#5a7077,#9fb7bd);--teal:light-dark(#0f4c5c,#7fc4d3);--band:light-dark(#0f4c5c,#0f3a46);--panel:light-dark(#f2f8f9,#11303a);--line:light-dark(#cfe0e4,#25505c);--or:#e36414;--ok:light-dark(#1d7a4d,#5fd39a);--no:light-dark(#b42318,#ff8a80);--c1:#d62828;--c2:#f77f00;--c3:#e0a100;--c4:#2a9d8f;--c5:#6a4c93}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Be Vietnam Pro",system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Baloo 2","Be Vietnam Pro",sans-serif;line-height:1.08;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(32px,4.6vw,48px);text-wrap:balance}
+h2{font-size:clamp(26px,3vw,34px)}
+h3{font-size:21px;color:var(--teal);margin-bottom:6px}
+p{margin:0 0 10px}
+a{color:var(--teal);font-weight:600}
+.top{background:var(--band);color:#fff;padding:22px max(5vw,16px) 0}
+.top a{color:#ffd9bf}
+.tw{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 28px;align-items:end}
+.sub{color:#cfe6eb;max-width:62ch;margin:6px 0 0}
+.who{display:flex;gap:10px;flex-wrap:wrap}
+.who label{display:grid;gap:4px;font-size:13px;color:#cfe6eb}
+.who input{width:9.5em;background:#fff;color:#10262e}
+.rail{max-width:1240px;margin:18px auto 0;display:flex;gap:8px;overflow-x:auto;padding-bottom:0}
+.cr{flex:1 0 128px;border:0;cursor:pointer;color:#fff;font:600 15px/1.2 "Be Vietnam Pro",sans-serif;text-align:left;padding:12px 26px 12px 12px;min-height:64px;border-radius:12px 12px 0 0;position:relative;background:color-mix(in srgb,var(--k) 55%,#0b2a33);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%);opacity:.92}
+.cr b{display:block;font-family:"Baloo 2",sans-serif;font-size:19px}
+.cr i{position:absolute;left:0;bottom:0;height:6px;background:#fff;opacity:.85;width:var(--p,0%);font-style:normal;transition:width .5s}
+.cr[aria-current=true]{background:var(--k);opacity:1}
+.cr:focus-visible{outline:3px solid #fff;outline-offset:-5px}
+main{max-width:1240px;margin:0 auto;padding:26px max(5vw,16px) 40px}
+.page{display:none}
+.page.on{display:block}
+.ph{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;margin-bottom:16px;border-bottom:3px solid var(--k);padding-bottom:10px}
+.ph span{color:var(--soft)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card+.card{margin-top:0}
+.stack>*+*{margin-top:18px}
+label.f{display:grid;gap:4px;font-weight:600;font-size:15px}
+input,select,textarea{font:16px/1.4 "Be Vietnam Pro",sans-serif;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%}
+textarea{min-height:76px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--or);outline-offset:1px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:600 15px "Be Vietnam Pro",sans-serif;min-height:44px;padding:10px 16px;border-radius:10px;border:1.5px solid var(--teal);background:transparent;color:var(--teal);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn.p{background:var(--or);border-color:var(--or);color:#fff}
+.btn:hover{filter:brightness(1.08)}
+.opts{display:grid;gap:8px;margin:8px 0}
+.opt{text-align:left;font:500 15px/1.35 "Be Vietnam Pro",sans-serif;padding:11px 14px;min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.opt[aria-pressed=true]{border-color:var(--teal);box-shadow:inset 0 0 0 1.5px var(--teal)}
+.opt.ok{border-color:var(--ok);box-shadow:inset 0 0 0 1.5px var(--ok)}
+.opt.no{border-color:var(--no);box-shadow:inset 0 0 0 1.5px var(--no)}
+.fb{font-size:15px;padding:10px 12px;border-radius:10px;margin-top:8px;border-left:4px solid var(--soft);background:var(--bg)}
+.fb.ok{border-color:var(--ok)}
+.fb.no{border-color:var(--no)}
+.fb:empty{display:none}
+.q{font-weight:600;margin:14px 0 4px}
+.q:first-child{margin-top:0}
+.small{font-size:13.5px;color:var(--soft)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{font:600 15px "Be Vietnam Pro",sans-serif;padding:9px 14px;min-height:44px;border-radius:999px;border:1.5px dashed var(--teal);background:var(--bg);color:var(--ink);cursor:grab}
+.chip[aria-pressed=true]{background:var(--teal);color:var(--bg);border-style:solid}
+.chip.used{opacity:.35}
+.diag{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);gap:10px;align-items:center}
+.st{border-radius:14px;padding:16px 8px;text-align:center;font:700 19px "Baloo 2",sans-serif;color:#fff}
+.st small{display:block;font:500 13px "Be Vietnam Pro",sans-serif;opacity:.9}
+.slots{display:grid;gap:12px}
+.slot{min-height:52px;border:2px dashed var(--line);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;font-weight:700;cursor:pointer;background:var(--bg);font-size:15px;color:var(--ink)}
+.slot small{display:block;font-weight:500;color:var(--soft);font-size:13px}
+.slot.ok{border:2px solid var(--ok)}
+.slot.no{border:2px solid var(--no)}
+.preds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.pred{border:1.5px solid var(--line);border-radius:12px;background:var(--bg);padding:8px;cursor:pointer;color:var(--ink);font:600 14px "Be Vietnam Pro",sans-serif;text-align:center}
+.pred svg{width:100%;height:auto;display:block}
+.pred[aria-pressed=true]{border-color:var(--or);box-shadow:inset 0 0 0 2px var(--or)}
+.ai{border-left:5px solid var(--c5);background:var(--bg);padding:12px 14px;border-radius:10px;font-style:italic}
+.steps{display:grid;gap:8px;counter-reset:s}
+.step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;text-align:left;font:500 15px/1.4 "Be Vietnam Pro",sans-serif;padding:10px 12px;min-height:44px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);cursor:pointer}
+.step b{font-family:"Baloo 2",sans-serif;font-size:18px;color:var(--teal);width:1.4em}
+.step[aria-pressed=true]{border-color:var(--no);box-shadow:inset 0 0 0 1.5px var(--no)}
+.step em{grid-column:2;font-style:normal;font-size:14px;color:var(--soft)}
+.fig{position:relative;min-height:340px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+svg text{font:13px "Be Vietnam Pro",sans-serif;fill:var(--soft);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font-weight:600;color:var(--soft);text-align:left;padding:4px 6px;border-bottom:1.5px solid var(--line)}
+td{padding:3px 4px;border-bottom:1px solid var(--line)}
+td input{padding:6px 8px;font-size:16px;text-align:right;font-variant-numeric:tabular-nums}
+td.t{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--soft);padding-left:8px}
+.tabs2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:10px;margin:12px 0}
+.kpi{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.kpi b{display:block;font:700 26px "Baloo 2",sans-serif;color:var(--teal);white-space:nowrap}
+.kpi span{font-size:13.5px;color:var(--soft)}
+.sample{font-size:13px;color:var(--or);font-weight:600}
+.card3r{border-radius:18px;padding:22px;color:#fff;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;background:var(--k)}
+.card3r q{font:700 clamp(24px,3.4vw,34px)/1.1 "Baloo 2",sans-serif;quotes:"“" "”"}
+.card3r .bar{display:flex;gap:6px}
+.card3r .bar i{flex:1;height:14px;border-radius:7px 7px 3px 3px;background:#fff;opacity:.85}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw button{width:44px;height:44px;border-radius:50%;border:3px solid transparent;cursor:pointer;background:var(--k)}
+.sw button[aria-pressed=true]{border-color:var(--ink)}
+.flips{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.flip{min-height:92px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;padding:10px;font:700 17px "Baloo 2",sans-serif}
+.flip span{display:block;font:500 13.5px/1.35 "Be Vietnam Pro",sans-serif;color:var(--soft);margin-top:4px}
+.flip.back{background:var(--teal);color:var(--bg);border-color:var(--teal)}
+.flip.back span{color:var(--bg)}
+.sum{white-space:pre-wrap;font:14px/1.6 "Be Vietnam Pro",sans-serif;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;max-height:460px;overflow:auto}
+.dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px}
+.dlg.on{display:flex}
+.dlg div{background:var(--bg);color:var(--ink);border-radius:14px;padding:20px;max-width:420px}
+.foot{border-top:1px solid var(--line);padding:16px max(5vw,16px);color:var(--soft);font-size:13.5px}
+.foot div{max-width:1240px;margin:0 auto}
+@media (max-width:860px){.g2,.tabs2{grid-template-columns:minmax(0,1fr)}.tw{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:600px){.cr{flex-basis:112px;font-size:13px}.preds{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}.diag{grid-template-columns:minmax(0,1fr)}.st{padding:10px}}
+@media (prefers-reduced-motion:reduce){.cr i{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="tw">
+    <div>
+      <h1>Nhật kí kỹ sư sáp</h1>
+      <p class="sub">Phiếu học tập số – chủ đề STEM “Vụn sáp hồi sinh”, KHTN 6 – Bài 10. Làm lần lượt 5 trạm; phiếu tự lưu trên máy này.</p>
+    </div>
+    <div class="who">
+      <label for="cls">Lớp<input id="cls" placeholder="6A1" autocomplete="off"></label>
+      <label for="grp">Nhóm<input id="grp" placeholder="Nhóm 1" autocomplete="off"></label>
+    </div>
+  </div>
+  <nav class="rail" aria-label="Các trạm">
+    <button class="cr" style="--k:var(--c1)" data-go="tram-1"><b>Trạm 1</b>Khảo sát<i></i></button>
+    <button class="cr" style="--k:var(--c2)" data-go="tram-2"><b>Trạm 2</b>Kiến thức nền<i></i></button>
+    <button class="cr" style="--k:var(--c3)" data-go="tram-3"><b>Trạm 3</b>Kiểm chứng AI<i></i></button>
+    <button class="cr" style="--k:var(--c4)" data-go="tram-4"><b>Trạm 4</b>Phòng dữ liệu<i></i></button>
+    <button class="cr" style="--k:var(--c5)" data-go="tram-5"><b>Trạm 5</b>Chia sẻ<i></i></button>
+    <button class="cr" style="--k:var(--or)" data-go="ket-qua"><b>Kết quả</b>Nộp Padlet<i></i></button>
+  </nav>
+</header>
+
+<main>
+<!-- TRẠM 1 -->
+<section class="page" id="p-tram-1" style="--k:var(--c1)">
+  <div class="ph"><h2>Trạm 1 · Khảo sát hộp bút của em</h2><span>Hoạt động 0 · làm ở nhà</span></div>
+  <div class="g2">
+    <div class="card stack">
+      <label class="f" for="t1but">Số bút sáp gãy, cụt trong hộp bút của em (cây)<input id="t1but" type="number" min="0" max="60" inputmode="numeric"></label>
+      <label class="f" for="t1gam">Khối lượng vụn sáp sau khi bóc vỏ (g)<input id="t1gam" type="number" min="0" max="300" inputmode="decimal"></label>
+      <div><div class="q">Màu em có nhiều vụn nhất</div><div class="chips" id="t1mau"></div></div>
+      <p class="small">Ảnh vụn sáp: chụp không lộ mặt, đăng lên Padlet của lớp.</p>
+    </div>
+    <div class="card">
+      <h3>Thử thách khởi động</h3>
+      <div class="q">Ở nhiệt độ phòng, sáp bút màu ở thể nào? Khi đun nóng thì sao?</div>
+      <div class="opts" data-mc="t1q"></div>
+      <div class="fb" id="fb-t1q"></div>
+      <h3 style="margin-top:18px">Gửi số liệu cho cả lớp</h3>
+      <p>Mỗi bạn điền biểu mẫu khảo sát của lớp (khoảng 3 phút, không ghi họ tên). Cô sẽ tổng hợp thành biểu đồ của cả lớp chiếu đầu giờ.</p>
+      <div class="row" id="formRow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRẠM 2 -->
+<section class="page" id="p-tram-2" style="--k:var(--c2)">
+  <div class="ph"><h2>Trạm 2 · Sáp đổi thể như thế nào?</h2><span>Hoạt động 2 · SGK Bài 10 và mô phỏng</span></div>
+  <div class="g2">
+    <div class="card">
+      <h3>a. Gắn tên cho hai mũi tên</h3>
+      <p class="small">Chạm một thẻ chữ rồi chạm vào ô mũi tên (hoặc kéo – thả). Có hai thẻ gây nhiễu.</p>
+      <div class="chips" id="chips"></div>
+      <div class="diag">
+        <div class="st" style="background:var(--c4)">Thể rắn<small>sáp nguội, cứng</small></div>
+        <div class="slots">
+          <div class="slot" id="s-up" data-slot="up" tabindex="0" role="button">→ ?<small>khi đun nóng</small></div>
+          <div class="slot" id="s-down" data-slot="down" tabindex="0" role="button">← ?<small>khi để nguội</small></div>
+        </div>
+        <div class="st" style="background:var(--c2)">Thể lỏng<small>sáp chảy</small></div>
+      </div>
+      <div class="row" style="margin-top:12px"><button class="btn p" id="chkDiag">Kiểm tra sơ đồ</button><button class="btn" id="clrDiag">Làm lại</button></div>
+      <div class="fb" id="fb-diag"></div>
+      <h3 style="margin-top:18px">b. Đúng hay sai?</h3>
+      <div id="tf"></div>
+    </div>
+    <div class="card">
+      <h3>c. Quan sát mô phỏng</h3>
+      <p>Mở web <a id="simLink" href="#">“Phòng thí nghiệm ảo KHTN 6”</a> → chọn <b>Bài 10</b> → thí nghiệm “Hạt chất ở thể rắn, lỏng, khí khi đun nóng”. Bấm <b>Đun nóng</b>, theo dõi ô Nhiệt độ và đồ thị.</p>
+      <div class="q">Trong khi nước đá đang nóng chảy, nhiệt độ…</div>
+      <div class="opts" data-mc="sim1"></div><div class="fb" id="fb-sim1"></div>
+      <div class="q">Khi chuyển từ thể rắn sang thể lỏng, các hạt…</div>
+      <div class="opts" data-mc="sim2"></div><div class="fb" id="fb-sim2"></div>
+      <h3 style="margin-top:18px">d. Dự đoán đồ thị của sáp bút màu</h3>
+      <p class="small">Sáp bút màu gồm sáp, chất màu và phụ gia. Khi đun, đồ thị nhiệt độ của sáp sẽ giống hình nào? Dự đoán này sẽ được đối chiếu ở Trạm 4.</p>
+      <div class="preds" id="preds"></div>
+      <label class="f" for="predWhy" style="margin-top:10px">Vì sao nhóm chọn như vậy?<textarea id="predWhy"></textarea></label>
+    </div>
+  </div>
+</section>
+
+<!-- TRẠM 3 -->
+<section class="page" id="p-tram-3" style="--k:var(--c3)">
+  <div class="ph"><h2>Trạm 3 · AI nói vậy, có đúng không?</h2><span>Hoạt động 2 · không tự dùng AI; giáo viên đã hỏi và ghi lại</span></div>
+  <div class="g2">
+    <div class="card">
+      <h3>a. Đặt ba nguồn cạnh nhau</h3>
+      <div class="q">AI nói</div>
+      <div class="ai" id="aiText"></div>
+      <div class="q">SGK nói (chọn câu đúng với SGK Bài 10)</div>
+      <div class="opts" data-mc="sgk"></div><div class="fb" id="fb-sgk"></div>
+      <div class="q">Mô phỏng cho thấy</div>
+      <div class="fb" id="simSays"></div>
+      <div class="q">Kết luận bước đầu của nhóm về câu trả lời của AI</div>
+      <div class="opts" data-mc="ai1"></div>
+      <label class="f" for="ai1Why">Lí do<textarea id="ai1Why"></textarea></label>
+      <div class="fb" id="fb-ai1"></div>
+    </div>
+    <div class="card">
+      <h3>b. Tìm lỗi trong bản hướng dẫn do AI soạn</h3>
+      <p class="small">Bản hướng dẫn có một số bước sai. Chạm vào các bước nhóm cho là sai, rồi bấm Nộp.</p>
+      <div class="steps" id="steps"></div>
+      <div class="row" style="margin-top:12px"><button class="btn p" id="chkSteps">Nộp</button><button class="btn" id="clrSteps">Làm lại</button><span class="small" id="stepCount"></span></div>
+      <div class="fb" id="fb-steps"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRẠM 4 -->
+<section class="page" id="p-tram-4" style="--k:var(--c4)">
+  <div class="ph"><h2>Trạm 4 · Phòng dữ liệu</h2><span>Hoạt động 4 · nhập số đo, đồ thị tự vẽ</span></div>
+  <div class="g2">
+    <div class="stack">
+      <div class="fig" id="fig"><svg id="chart" role="img" aria-label="Đồ thị nhiệt độ của sáp theo thời gian"></svg></div>
+      <div class="row"><label class="row small" for="pure"><input id="pure" type="checkbox" style="width:22px;height:22px"> So với đồ thị của chất tinh khiết (đường nét đứt, minh họa)</label></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="card">
+        <h3>Kết luận sau khi đo</h3>
+        <div class="q" id="predBack"></div>
+        <div class="opts" data-mc="predOk"></div>
+        <div class="q">Sau khi đo, câu trả lời của AI là…</div>
+        <div class="opts" data-mc="ai2"></div>
+        <div class="fb" id="fb-ai2"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between"><h3>Bảng số liệu của nhóm</h3><div class="row"><button class="btn" id="fillSample">Điền số liệu mẫu</button><button class="btn" id="clrData">Xóa bảng</button></div></div>
+      <p class="sample" id="sampleNote" hidden>Đang hiển thị số liệu mẫu để xem đồ thị hoạt động; bấm “Xóa bảng” trước khi nhập số liệu thật.</p>
+      <div class="row">
+        <label class="f" for="mIn" style="flex:1 1 9em">Sáp đem đun (g)<input id="mIn" type="number" inputmode="decimal"></label>
+        <label class="f" for="mOut" style="flex:1 1 9em">Sản phẩm (g)<input id="mOut" type="number" inputmode="decimal"></label>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <label class="f" for="m0" style="flex:1 1 9em">Sáp bắt đầu chảy ở (°C)<input id="m0" type="number" inputmode="decimal"></label>
+        <label class="f" for="m1" style="flex:1 1 9em">Sáp chảy hết ở (°C)<input id="m1" type="number" inputmode="decimal"></label>
+      </div>
+      <div class="tabs2" style="margin-top:12px">
+        <div class="scroll"><div class="q">Khi đun nóng (mỗi 0,5 phút)</div><table><thead><tr><th>Phút</th><th>°C</th></tr></thead><tbody id="heatT"></tbody></table></div>
+        <div class="scroll"><div class="q">Khi để nguội (mỗi 1 phút)</div><table><thead><tr><th>Phút</th><th>°C</th></tr></thead><tbody id="coolT"></tbody></table><p class="small" style="margin-top:6px">Ghi tiếp thời gian tính từ lúc bắt đầu đun. Rút nhiệt kế khi sáp bắt đầu sệt.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRẠM 5 -->
+<section class="page" id="p-tram-5" style="--k:var(--c5)">
+  <div class="ph"><h2>Trạm 5 · Luyện tập và chia sẻ</h2><span>Hoạt động 5</span></div>
+  <div class="g2">
+    <div class="card" id="quiz"><h3>Luyện tập</h3></div>
+    <div class="stack">
+      <div class="card">
+        <h3>Thẻ thông điệp 3R của nhóm</h3>
+        <label class="f" for="slogan">Thông điệp (tối đa 60 kí tự)<input id="slogan" maxlength="60"></label>
+        <div class="sw" id="sw" style="margin:10px 0"></div>
+        <div class="card3r" id="c3r"><q id="c3rq"></q><div><div class="bar"><i></i><i></i><i></i><i></i><i></i></div><p style="margin:10px 0 0;font-weight:600" id="c3rw"></p></div></div>
+        <p class="small" style="margin-top:8px">Chụp màn hình thẻ để đăng lên Padlet của lớp.</p>
+      </div>
+      <div class="card">
+        <h3>Kế hoạch cải tiến (chỉ đổi một biến số)</h3>
+        <label class="f" for="imp">Nhóm sẽ thay đổi<select id="imp"><option value="">Chọn một biến số</option><option>Lượng dầu dừa thêm vào sáp</option><option>Khối lượng sáp cho mỗi khuôn</option><option>Loại khuôn (silicon, ống hút, cốc giấy)</option><option>Thời gian chờ trước khi lấy khỏi khuôn</option></select></label>
+        <label class="f" for="impHow" style="margin-top:8px">Giữ nguyên những gì, so sánh bằng tiêu chí nào?<textarea id="impHow"></textarea></label>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px"><h3>Từ vựng khoa học song ngữ</h3><p class="small">Chạm thẻ để lật.</p><div class="flips" id="flips"></div></div>
+</section>
+
+<!-- KẾT QUẢ -->
+<section class="page" id="p-ket-qua" style="--k:var(--or)">
+  <div class="ph"><h2>Phiếu kết quả của nhóm</h2><span>Sao chép và dán lên Padlet, hoặc chụp màn hình</span></div>
+  <div class="g2">
+    <div class="card"><div class="kpis" id="sumK"></div><div class="row"><button class="btn p" id="copy">Sao chép kết quả</button><button class="btn" id="reset">Làm lại từ đầu</button><a class="btn" id="padLink" href="#">Mở Padlet của lớp</a></div><p class="small" id="copyMsg" style="margin-top:8px"></p></div>
+    <div class="sum" id="sumT"></div>
+  </div>
+</section>
+</main>
+<footer class="foot"><div>Phiếu không thu tên học sinh; chỉ ghi lớp và nhóm. Bài làm được lưu trên trình duyệt của máy đang dùng. Học sinh không tự sử dụng công cụ AI: câu trả lời của AI ở Trạm 3 do giáo viên hỏi và ghi lại. Tác giả: Nguyễn Thuỷ Lưu – THCS Nguyễn Du, TP.HCM.</div></footer>
+<div class="dlg" id="dlg" role="dialog" aria-modal="true"><div><p><b>Xóa toàn bộ bài làm trên máy này?</b></p><div class="row"><button class="btn p" id="dYes">Xóa</button><button class="btn" id="dNo">Hủy</button></div></div></div>
+
+<script>
+{
+const CFG = {
+  FORM_URL: 'https://forms.gle/NN87Gc6Ad5d9GfCv5',
+  PADLET_URL: 'https://padlet.com/luunguyen180797/stem-vun-sap-tai-sinh-s025bcc4t7qqpuoc9bsw',
+  SIM_URL: 'https://claude.ai/artifact/LCbqUNQm6yZsfjLp7Rdco3',
+  AI_TEXT: '“Bút sáp màu nóng chảy ở khoảng 60 °C. Trong khi nóng chảy, nhiệt độ giữ không đổi, đồ thị có một đoạn nằm ngang ở khoảng 60 °C.”'
+};
+const KEY = 'nhat-ki-ky-su-sap-v1';
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+let S = {};
+try { S = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { S = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} rail(); summary(); };
+S.mc = S.mc || {}; S.tf = S.tf || {}; S.steps = S.steps || []; S.heat = S.heat || Array(20).fill(''); S.cool = S.cool || Array.from({length: 12}, () => ['', '']);
+
+/* ---------- multiple choice ---------- */
+const MC = {
+  t1q: {o: ['Rắn; khi đun nóng, sáp mềm dần rồi chảy thành chất lỏng.', 'Lỏng; khi đun nóng, sáp bay hơi hết.', 'Rắn; khi đun nóng, sáp tan vào nước.'], a: 0,
+    e: ['Đúng. Ở nhiệt độ phòng sáp là chất rắn; nhận nhiệt thì sáp chảy lỏng.', 'Chưa đúng: ở nhiệt độ phòng sáp cứng, giữ được hình cây bút.', 'Chưa đúng: sáp không tan vào nước; khi đun sáp tự chảy lỏng.']},
+  sim1: {o: ['tăng đều', 'giữ không đổi ở 0 °C cho đến khi tan hết', 'giảm dần'], a: 1,
+    e: ['Xem lại ô Nhiệt độ lúc đá đang tan: con số có đứng yên không?', 'Đúng. Nước đá là chất tinh khiết: trong lúc nóng chảy, nhiệt độ đứng yên ở 0 °C.', 'Đang đun nên nhiệt độ không giảm. Xem lại mô phỏng.']},
+  sim2: {o: ['đứng yên hoàn toàn', 'không còn chỉ dao động tại chỗ mà trượt lên nhau, chuyển động nhanh hơn', 'tách ra bay đi hết'], a: 1,
+    e: ['Ở thể rắn hạt vẫn dao động tại chỗ, không đứng yên.', 'Đúng. Đó là lí do chất lỏng chảy được và có hình dạng của bình chứa.', 'Đó là khi chất chuyển sang thể khí.']},
+  sgk: {o: ['Chất rắn tinh khiết nóng chảy ở một nhiệt độ xác định.', 'Mọi chất rắn đều nóng chảy ở khoảng 60 °C.', 'SGK không nói gì về nhiệt độ nóng chảy.'], a: 0,
+    e: ['Đúng. Lưu ý chữ “tinh khiết”: bút sáp màu có phải chất tinh khiết không?', 'Chưa đúng: mỗi chất có nhiệt độ nóng chảy riêng (nước đá 0 °C).', 'Xem lại SGK Bài 10, phần sự nóng chảy.']},
+  ai1: {o: ['Đúng', 'Chưa đủ', 'Sai', 'Cần đo mới biết'], a: -1},
+  predOk: {o: ['Dự đoán của nhóm đúng', 'Dự đoán của nhóm chưa đúng'], a: -1},
+  ai2: {o: ['Đúng', 'Chưa đủ', 'Sai'], a: 1,
+    e: ['Kiểm tra lại đồ thị: trong khoảng sáp đang chảy, nhiệt độ có thật sự đứng yên không?', 'Hợp lí: AI đúng là khoảng 60 °C, nhưng sáp bút màu là hỗn hợp nên nóng chảy trong một khoảng nhiệt độ, nhiệt độ vẫn tăng chậm chứ không đứng yên.', 'AI không sai hoàn toàn: con số khoảng 60 °C gần với số đo. Phần còn thiếu là gì?']},
+  q1: {o: ['Sáp nhận nhiệt, nóng lên, mềm rồi nóng chảy.', 'Sáp bị hòa tan trong không khí.', 'Sáp đông đặc lại.'], a: 0, e: ['Đúng: rắn → lỏng khi nhận nhiệt.', 'Chưa đúng: không có chất lỏng nào hòa tan sáp ở đây.', 'Đông đặc là lỏng → rắn, xảy ra khi sáp nguội.']},
+  q2: {o: ['Sự nóng chảy', 'Sự đông đặc', 'Sự bay hơi'], a: 1, e: ['Ngược lại: nóng chảy là rắn → lỏng.', 'Đúng: sáp lỏng nguội đi, chuyển sang thể rắn.', 'Bay hơi là lỏng → khí.']},
+  q3: {o: ['Nước trong khay ngăn đá thành đá', 'Đường tan trong nước', 'Nước sôi'], a: 0, e: ['Đúng: lỏng → rắn là sự đông đặc.', 'Đó là sự hòa tan, không phải chuyển thể.', 'Đó là sự sôi (lỏng → khí).']},
+  q4: {o: ['Nước đá có đoạn nằm ngang ở 0 °C; sáp nóng chảy trong một khoảng nhiệt độ vì là hỗn hợp.', 'Hai đồ thị giống hệt nhau.', 'Sáp không nóng chảy.'], a: 0, e: ['Đúng: chất tinh khiết và hỗn hợp nóng chảy khác nhau.', 'So lại đồ thị Trạm 4 với mô phỏng.', 'Sáp có nóng chảy, khoảng 50–62 °C trong số liệu mẫu.']}
+};
+function mc(id) {
+  const box = $(`[data-mc="${id}"]`); if (!box) return;
+  const d = MC[id];
+  box.innerHTML = d.o.map((t, i) => `<button class="opt" data-i="${i}">${t}</button>`).join('');
+  const paint = () => {
+    const v = S.mc[id];
+    box.querySelectorAll('.opt').forEach(b => {
+      const i = +b.dataset.i; b.setAttribute('aria-pressed', v === i); b.classList.remove('ok', 'no');
+      if (v === i && d.a >= 0) b.classList.add(i === d.a ? 'ok' : 'no');
+    });
+    const f = $('#fb-' + id);
+    if (f) { f.className = 'fb' + (v == null || d.a < 0 ? '' : v === d.a ? ' ok' : ' no'); f.textContent = v == null || !d.e ? '' : d.e[v] || ''; }
+  };
+  box.addEventListener('click', ev => { const b = ev.target.closest('.opt'); if (!b) return; S.mc[id] = +b.dataset.i; paint(); afterMC(id); save(); });
+  paint();
+}
+function afterMC(id) {
+  if (id === 'sim1') simSays();
+  if (id === 'ai1') aiHint();
+}
+
+/* ---------- Trạm 1 ---------- */
+const COLS = [['Đỏ', '#d62828'], ['Cam', '#f77f00'], ['Vàng', '#e0a100'], ['Xanh lá', '#2a9d8f'], ['Xanh dương', '#277da1'], ['Tím', '#6a4c93'], ['Hồng', '#e56b9f'], ['Trắng', '#cfd8dc']];
+$('#t1mau').innerHTML = COLS.map(([n, c]) => `<button class="chip" data-c="${n}" style="border-color:${c}">${n}</button>`).join('');
+const paintMau = () => $$('#t1mau .chip').forEach(b => b.setAttribute('aria-pressed', S.mau === b.dataset.c));
+$('#t1mau').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; S.mau = b.dataset.c; paintMau(); save(); });
+$('#formRow').innerHTML = CFG.FORM_URL ? `<a class="btn p" href="${CFG.FORM_URL}">Mở biểu mẫu khảo sát của lớp</a>` : `<span class="small">Giáo viên sẽ gửi đường link biểu mẫu khảo sát trên Padlet.</span>`;
+$('#formRow').insertAdjacentHTML('beforeend', `<a class="btn" href="${CFG.PADLET_URL}">Padlet của lớp</a>`);
+
+/* ---------- Trạm 2: sơ đồ ---------- */
+const WORDS = ['Sự nóng chảy', 'Sự đông đặc', 'Sự hòa tan', 'Sự bay hơi'];
+S.slot = S.slot || {};
+let pick = null;
+function chips() {
+  const used = Object.values(S.slot);
+  $('#chips').innerHTML = WORDS.map(w => `<button class="chip${used.includes(w) ? ' used' : ''}" draggable="true" data-w="${w}" aria-pressed="${pick === w}">${w}</button>`).join('');
+  ['up', 'down'].forEach(k => { const el = $('#s-' + k); el.classList.remove('ok', 'no'); el.innerHTML = (S.slot[k] || (k === 'up' ? '→ ?' : '← ?')) + `<small>${k === 'up' ? 'khi đun nóng' : 'khi để nguội'}</small>`; });
+}
+$('#chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; pick = pick === b.dataset.w ? null : b.dataset.w; chips(); });
+$('#chips').addEventListener('dragstart', e => { const b = e.target.closest('.chip'); if (b) e.dataTransfer.setData('text/plain', b.dataset.w); });
+$$('.slot').forEach(el => {
+  const put = w => { if (!w) return; for (const k in S.slot) if (S.slot[k] === w) delete S.slot[k]; S.slot[el.dataset.slot] = w; pick = null; chips(); $('#fb-diag').textContent = ''; save(); };
+  el.addEventListener('click', () => put(pick));
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); put(pick); } });
+  el.addEventListener('dragover', e => e.preventDefault());
+  el.addEventListener('drop', e => { e.preventDefault(); put(e.dataTransfer.getData('text/plain')); });
+});
+function chkDiag(show) {
+  const ok = S.slot.up === 'Sự nóng chảy' && S.slot.down === 'Sự đông đặc';
+  S.diagOk = ok;
+  if (!show) return;
+  $('#s-up').classList.add(S.slot.up === 'Sự nóng chảy' ? 'ok' : 'no'); $('#s-down').classList.add(S.slot.down === 'Sự đông đặc' ? 'ok' : 'no');
+  const f = $('#fb-diag'); f.className = 'fb ' + (ok ? 'ok' : 'no');
+  f.textContent = ok ? 'Chính xác: rắn → lỏng là sự nóng chảy; lỏng → rắn là sự đông đặc.' :
+    (Object.values(S.slot).includes('Sự hòa tan') ? 'Sự hòa tan là khi một chất tan vào chất lỏng (như đường tan trong nước), không phải chuyển thể. Thử lại.' : 'Chưa đúng. Gợi ý: khi đun, sáp từ rắn chuyển sang lỏng.');
+}
+$('#chkDiag').addEventListener('click', () => { chkDiag(true); save(); });
+$('#clrDiag').addEventListener('click', () => { S.slot = {}; S.diagOk = false; pick = null; chips(); $('#fb-diag').textContent = ''; save(); });
+
+/* ---------- Trạm 2: đúng/sai ---------- */
+const TF = [
+  ['Sự nóng chảy là khi chất tan vào nước.', false, 'Sai. Đó là sự hòa tan. Nóng chảy là chất chuyển từ thể rắn sang thể lỏng khi nhận nhiệt.'],
+  ['Khi đun, sáp chỉ thay đổi thể, không biến thành chất khác.', true, 'Đúng. Vì vậy sáp tái chế được nhiều lần.'],
+  ['Đun cách thủy giúp sáp nóng đều, không bị quá nóng.', true, 'Đúng. Đun trực tiếp trên lửa dễ làm sáp bốc khói, bắt lửa.'],
+  ['Có thể lấy sản phẩm khỏi khuôn ngay sau khi rót để kịp giờ.', false, 'Sai. Phải chờ sáp đông đặc hoàn toàn, nếu không sản phẩm bị móp, gãy.']
+];
+$('#tf').innerHTML = TF.map((t, i) => `<div class="q">${i + 1}. ${t[0]}</div><div class="row" data-tf="${i}"><button class="opt" data-v="1">Đúng</button><button class="opt" data-v="0">Sai</button></div><div class="fb" id="fb-tf${i}"></div>`).join('');
+function paintTF() {
+  TF.forEach((t, i) => {
+    const v = S.tf[i];
+    $$(`[data-tf="${i}"] .opt`).forEach(b => { const on = v != null && +b.dataset.v === +v; b.setAttribute('aria-pressed', on); b.classList.remove('ok', 'no'); if (on) b.classList.add(!!+v === t[1] ? 'ok' : 'no'); });
+    const f = $('#fb-tf' + i); f.className = 'fb' + (v == null ? '' : !!+v === t[1] ? ' ok' : ' no'); f.textContent = v == null ? '' : t[2];
+  });
+}
+$('#tf').addEventListener('click', e => { const b = e.target.closest('.opt'); if (!b) return; S.tf[b.parentElement.dataset.tf] = +b.dataset.v; paintTF(); save(); });
+
+/* ---------- Trạm 2: dự đoán đồ thị ---------- */
+const PRED = {
+  A: ['Có đoạn nằm ngang rõ', 'M5 55 L30 30 L62 30 L95 8'],
+  B: ['Tăng đều, thẳng', 'M5 55 L95 8'],
+  C: ['Tăng chậm lại trong một khoảng', 'M5 55 C18 38 26 32 34 30 S58 25 66 22 L95 6']
+};
+$('#preds').innerHTML = Object.entries(PRED).map(([k, [n, d]]) => `<button class="pred" data-p="${k}"><svg viewBox="0 0 100 62" aria-hidden="true"><path d="M5 2 V58 H98" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="${d}" fill="none" stroke="#e36414" stroke-width="3.5" stroke-linecap="round"/></svg>${k}. ${n}</button>`).join('');
+const paintPred = () => $$('#preds .pred').forEach(b => b.setAttribute('aria-pressed', S.pred === b.dataset.p));
+$('#preds').addEventListener('click', e => { const b = e.target.closest('.pred'); if (!b) return; S.pred = b.dataset.p; paintPred(); predBack(); save(); });
+
+/* ---------- Trạm 3 ---------- */
+$('#aiText').textContent = CFG.AI_TEXT;
+function simSays() {
+  const v = S.mc.sim1, f = $('#simSays');
+  f.className = 'fb' + (v === 1 ? ' ok' : '');
+  f.textContent = v == null ? 'Chưa làm câu mô phỏng ở Trạm 2.' : v === 1 ? 'Nước đá (chất tinh khiết): nhiệt độ đứng yên ở 0 °C trong lúc nóng chảy.' : 'Nhóm đã chọn: nhiệt độ ' + MC.sim1.o[v] + '. Hãy xem lại mô phỏng ở Trạm 2.';
+}
+function aiHint() {
+  const f = $('#fb-ai1'); if (S.mc.ai1 == null) { f.textContent = ''; return; }
+  f.className = 'fb'; f.textContent = 'Đã ghi nhận. Gợi ý suy nghĩ: SGK nói về chất rắn tinh khiết; bút sáp màu có sáp, chất màu, phụ gia. Nhóm sẽ kiểm chứng bằng số liệu thật ở Trạm 4.';
+}
+const STEPS = [
+  ['Cân vụn sáp và ghi khối lượng vào bảng.', false, 'Bước này đúng.'],
+  ['Đặt becher trực tiếp lên ngọn lửa đèn cồn cho sáp chảy nhanh.', true, 'Sai: sáp quá nóng dễ bốc khói, bắt lửa → đun cách thủy.'],
+  ['Không cần đo nhiệt độ, chỉ cần nhìn là đủ.', true, 'Sai: không có số liệu thì không kiểm chứng được → đo mỗi 0,5 phút.'],
+  ['Cầm becher bằng tay trần cho chắc.', true, 'Sai: dễ bị bỏng → dùng kẹp gỗ.'],
+  ['Khuấy nhẹ cho sáp đồng nhất.', false, 'Bước này đúng: khuấy nhẹ, không khuấy mạnh.'],
+  ['Sáp thừa đổ xuống bồn rửa cho sạch.', true, 'Sai: sáp đông lại làm tắc ống → lau bằng giấy, đổ vào khuôn.'],
+  ['Lấy bút ra khỏi khuôn ngay sau khi rót.', true, 'Sai: sáp chưa đông đặc, bút bị móp → để nguội hẳn.']
+];
+function steps(reveal) {
+  $('#steps').innerHTML = STEPS.map((s, i) => `<button class="step" data-i="${i}" aria-pressed="${S.steps.includes(i)}"><b>${i + 1}</b><span>${s[0]}</span>${reveal ? `<em style="color:var(${s[1] ? '--no' : '--ok'})">${s[2]}</em>` : ''}</button>`).join('');
+  $('#stepCount').textContent = `Đã đánh dấu ${S.steps.length} bước`;
+}
+$('#steps').addEventListener('click', e => { const b = e.target.closest('.step'); if (!b) return; const i = +b.dataset.i; S.steps = S.steps.includes(i) ? S.steps.filter(x => x !== i) : [...S.steps, i]; S.stepsDone = false; steps(false); $('#fb-steps').textContent = ''; save(); });
+function stepScore() { const hit = S.steps.filter(i => STEPS[i][1]).length, wrong = S.steps.filter(i => !STEPS[i][1]).length; return [hit, wrong]; }
+function chkSteps() {
+  const [hit, wrong] = stepScore(); steps(true);
+  const f = $('#fb-steps'); f.className = 'fb ' + (hit === 5 && !wrong ? 'ok' : 'no');
+  f.textContent = `Tìm đúng ${hit}/5 bước sai` + (wrong ? `, đánh dấu nhầm ${wrong} bước đúng.` : '.') + (hit < 5 ? ' Đọc lời giải thích dưới mỗi bước.' : '');
+}
+$('#chkSteps').addEventListener('click', () => { S.stepsDone = true; chkSteps(); save(); });
+$('#clrSteps').addEventListener('click', () => { S.steps = []; S.stepsDone = false; steps(false); $('#fb-steps').textContent = ''; save(); });
+
+/* ---------- Trạm 4 ---------- */
+const HT = Array.from({length: 20}, (_, i) => i * 0.5);
+const fmt = v => String(Math.round(v * 10) / 10).replace('.', ',');
+$('#heatT').innerHTML = HT.map((t, i) => `<tr><td class="t">${fmt(t)}</td><td><input id="h${i}" data-h="${i}" type="number" inputmode="decimal" aria-label="Nhiệt độ phút ${fmt(t)}"></td></tr>`).join('');
+$('#coolT').innerHTML = S.cool.map((_, i) => `<tr><td><input id="ct${i}" data-ct="${i}" type="number" inputmode="decimal" aria-label="Phút"></td><td><input id="cv${i}" data-cv="${i}" type="number" inputmode="decimal" aria-label="Nhiệt độ"></td></tr>`).join('');
+const num = v => (v === '' || v == null || isNaN(+v)) ? null : +v;
+function loadData() {
+  HT.forEach((_, i) => $('#h' + i).value = S.heat[i] ?? '');
+  S.cool.forEach((r, i) => { $('#ct' + i).value = r[0] ?? ''; $('#cv' + i).value = r[1] ?? ''; });
+  ['mIn', 'mOut', 'm0', 'm1'].forEach(k => $('#' + k).value = S[k] ?? '');
+  $('#pure').checked = !!S.pure; $('#sampleNote').hidden = !S.sample;
+}
+$('#p-tram-4').addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.h != null) S.heat[t.dataset.h] = t.value;
+  else if (t.dataset.ct != null) S.cool[t.dataset.ct][0] = t.value;
+  else if (t.dataset.cv != null) S.cool[t.dataset.cv][1] = t.value;
+  else if (['mIn', 'mOut', 'm0', 'm1'].includes(t.id)) S[t.id] = t.value;
+  else if (t.id === 'pure') S.pure = t.checked;
+  draw(); kpis(); save();
+});
+$('#fillSample').addEventListener('click', () => {
+  S.heat = [31, 39, 45, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 64, 67, 69, 71, 73].map(String);
+  S.cool = [[11, 70], [12, 65], [13, 61], [14, 59], [15, 57], [16, 56], [17, 55], [18, 54], [19, 53], [20, 52], ['', ''], ['', '']].map(r => r.map(String));
+  Object.assign(S, {mIn: '60', mOut: '55', m0: '50', m1: '62', sample: true});
+  loadData(); draw(); kpis(); save();
+});
+$('#clrData').addEventListener('click', () => {
+  S.heat = Array(20).fill(''); S.cool = Array.from({length: 12}, () => ['', '']); Object.assign(S, {mIn: '', mOut: '', m0: '', m1: '', sample: false});
+  loadData(); draw(); kpis(); save();
+});
+function series() {
+  const h = HT.map((t, i) => [t, num(S.heat[i])]).filter(p => p[1] != null);
+  const c = S.cool.map(r => [num(r[0]), num(r[1])]).filter(p => p[0] != null && p[1] != null).sort((a, b) => a[0] - b[0]);
+  return [h, c];
+}
+function slopes(h) {
+  const m0 = num(S.m0), m1 = num(S.m1); if (h.length < 4 || m0 == null || m1 == null) return null;
+  const a = h.findIndex(p => p[1] >= m0), b = h.findIndex(p => p[1] > m1), bb = b < 0 ? h.length - 1 : b;
+  if (a < 1 || bb <= a) return null;
+  const sl = (i, j) => (h[j][1] - h[i][1]) / (h[j][0] - h[i][0]);
+  const after = b > 0 && b < h.length - 1 ? sl(b, h.length - 1) : null;
+  const e = Math.max(a + 1, (b < 0 ? h.length : b) - 1);
+  return {before: sl(0, a), during: sl(a, Math.min(e, h.length - 1)), after, tA: h[a][0], tB: b > 0 ? h[b][0] : null};
+}
+const S_ = document.getElementById('chart');
+function draw() {
+  const W = S_.clientWidth, H = S_.clientHeight; if (!W) return;
+  const [h, c] = series(), all = [...h, ...c];
+  const L = 44, R = 16, T = 16, B = 40;
+  const tmax = Math.max(10, ...all.map(p => p[0])), xm = Math.ceil((tmax + 0.5) / 5) * 5;
+  const ys = all.map(p => p[1]); const ylo = ys.length ? Math.floor((Math.min(...ys) - 2) / 10) * 10 : 20, yhi = ys.length ? Math.ceil((Math.max(...ys) + 2) / 10) * 10 : 80;
+  const X = t => L + (W - L - R) * t / xm, Y = v => T + (H - T - B) * (1 - (v - ylo) / ((yhi - ylo) || 1));
+  let o = '';
+  const m0 = num(S.m0), m1 = num(S.m1);
+  if (m0 != null && m1 != null && m1 > m0) o += `<rect x="${L}" y="${Y(Math.min(m1, yhi))}" width="${W - L - R}" height="${Math.max(0, Y(Math.max(m0, ylo)) - Y(Math.min(m1, yhi)))}" fill="#e36414" opacity=".14"/>` + (W >= 520 ? `<text x="${W - R - 4}" y="${Y(m1) - 6}" text-anchor="end">khoảng sáp đang chảy / đông đặc</text>` : '');
+  const stepX = W < 520 ? 5 : 2;
+  for (let t = 0; t <= xm; t += stepX) o += `<line x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}" stroke="currentColor" stroke-opacity=".1"/><text x="${X(t)}" y="${H - B + 18}" text-anchor="middle">${t}</text>`;
+  for (let v = ylo; v <= yhi; v += 10) o += `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="currentColor" stroke-opacity=".12"/><text x="${L - 8}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`;
+  o += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">Thời gian từ lúc bắt đầu đun (phút)</text><text x="12" y="${T + 4}" transform="rotate(-90 12 ${T + 4})" text-anchor="end">°C</text>`;
+  if (S.pure && h.length > 3 && m0 != null && m1 != null) {
+    const sl = slopes(h);
+    if (sl && sl.tB != null) { const Tm = (m0 + m1) / 2, last = h[h.length - 1]; o += `<path d="M${X(h[0][0])} ${Y(h[0][1])} L${X(sl.tA)} ${Y(Tm)} L${X(sl.tB)} ${Y(Tm)} L${X(last[0])} ${Y(last[1])}" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5" opacity=".7"/><text x="${W - R - 4}" y="${H - B - 10}" text-anchor="end">nét đứt: chất tinh khiết (đoạn nằm ngang)</text>`; }
+  }
+  const line = (pts, col) => pts.length ? `<path d="${pts.map((p, i) => (i ? 'L' : 'M') + X(p[0]) + ' ' + Y(p[1])).join(' ')}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round"/>` + pts.map(p => `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="3.5" fill="${col}"/>`).join('') : '';
+  o += line(h, '#e36414') + line(c, '#2a9d8f');
+  if (h.length) { const p = h[h.length - 1]; o += `<text x="${Math.min(X(p[0]) + 6, W - R - 60)}" y="${Y(p[1]) - 8}" style="fill:#e36414">đun nóng</text>`; }
+  if (c.length) { const p = c[c.length - 1]; o += `<text x="${Math.min(X(p[0]) + 6, W - R - 50)}" y="${Y(p[1]) + 18}" style="fill:#2a9d8f">để nguội</text>`; }
+  if (!all.length) o += `<text x="${W / 2}" y="${H / 2}" text-anchor="middle">Nhập nhiệt độ vào bảng, đồ thị sẽ tự vẽ</text>`;
+  S_.innerHTML = o;
+}
+const ro = new ResizeObserver(draw); ro.observe(S_);
+function kpis() {
+  const [h, c] = series(), mi = num(S.mIn), mo = num(S.mOut), sl = slopes(h);
+  const k = [];
+  k.push([h.length + c.length, 'số đo đã ghi']);
+  k.push([mi && mo != null ? fmt(100 * mo / mi) + ' %' : '–', 'tỉ lệ sáp tái chế']);
+  k.push([sl ? fmt(sl.before) : '–', '°C/phút trước khi chảy']);
+  k.push([sl ? fmt(sl.during) : '–', '°C/phút trong lúc chảy']);
+  $('#kpis').innerHTML = k.map(([b, s]) => `<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+  S.k = {n: h.length + c.length, rate: mi && mo != null ? 100 * mo / mi : null, before: sl && sl.before, during: sl && sl.during};
+  predBack();
+}
+function predBack() {
+  const el = $('#predBack'); if (!el) return;
+  const sl = S.k || {};
+  let msg = S.pred ? `Dự đoán của nhóm ở Trạm 2: hình ${S.pred} – ${PRED[S.pred][0].toLowerCase()}.` : 'Nhóm chưa chọn dự đoán ở Trạm 2.';
+  if (sl.during != null && sl.before) msg += sl.during < 0.3 ? ' Số đo cho thấy nhiệt độ gần như đứng yên trong lúc chảy.' : ` Số đo cho thấy trong lúc chảy nhiệt độ vẫn tăng, nhưng chậm hơn khoảng ${Math.max(1, Math.round(sl.before / sl.during))} lần.`;
+  el.textContent = msg;
+}
+
+/* ---------- Trạm 5 ---------- */
+$('#quiz').insertAdjacentHTML('beforeend', [['q1', '1. Vì sao bút sáp để gần nguồn nhiệt bị mềm, chảy ra?'], ['q2', '2. Sáp lỏng trong khuôn nguội đi và cứng lại. Đó là quá trình gì?'], ['q3', '3. Ví dụ nào là sự đông đặc?'], ['q4', '4. (Nâng cao) So sánh đồ thị nước đá trong mô phỏng với đồ thị sáp ở Trạm 4.']]
+  .map(([id, q]) => `<div class="q">${q}</div><div class="opts" data-mc="${id}"></div><div class="fb" id="fb-${id}"></div>`).join(''));
+const CC = ['var(--c1)', 'var(--c2)', 'var(--c4)', 'var(--c5)', 'var(--teal)'];
+$('#sw').innerHTML = CC.map((c, i) => `<button style="--k:${c}" data-i="${i}" aria-label="Màu ${i + 1}"></button>`).join('');
+function card3r() {
+  $('#c3r').style.setProperty('--k', CC[S.cc || 0]);
+  $('#c3rq').textContent = S.slogan || 'Bút cụt đừng vứt – nóng chảy là hồi sinh!';
+  $('#c3rw').textContent = [S.grp || 'Nhóm', S.cls ? 'lớp ' + S.cls : ''].filter(Boolean).join(' – ') + ' · Vụn sáp hồi sinh · Reduce, Reuse, Recycle';
+  $$('#sw button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.i === (S.cc || 0)));
+}
+$('#sw').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S.cc = +b.dataset.i; card3r(); save(); });
+const VOC = [['Sự nóng chảy', 'Melting', 'Wax melts when it is heated.'], ['Sự đông đặc', 'Solidifying', 'Liquid wax solidifies when it cools down.'], ['Thể rắn', 'Solid', 'Wax is a solid at room temperature.'], ['Thể lỏng', 'Liquid', 'Hot wax is a liquid.'], ['Sáp', 'Wax', 'We recycle crayon wax.'], ['Nhiệt độ', 'Temperature', 'We record the temperature.'], ['Nhiệt kế', 'Thermometer', 'We use a thermometer.'], ['Đun cách thủy', 'Water bath', 'We heat the wax in a water bath.'], ['Khuôn', 'Mold', 'We pour the wax into a mold.'], ['3R', 'Reduce, Reuse, Recycle', 'Every crayon deserves a second chance.']];
+$('#flips').innerHTML = VOC.map((v, i) => `<button class="flip" data-i="${i}">${v[0]}<span>Chạm để xem tiếng Anh</span></button>`).join('');
+$('#flips').addEventListener('click', e => { const b = e.target.closest('.flip'); if (!b) return; const v = VOC[b.dataset.i], back = !b.classList.contains('back'); b.classList.toggle('back', back); b.innerHTML = back ? `${v[1]}<span>${v[2]}</span>` : `${v[0]}<span>Chạm để xem tiếng Anh</span>`; });
+
+/* ---------- inputs giữ lại ---------- */
+['cls', 'grp', 't1but', 't1gam', 'predWhy', 'ai1Why', 'slogan', 'imp', 'impHow'].forEach(id => {
+  const el = $('#' + id); el.value = S[id] ?? '';
+  el.addEventListener('input', () => { S[id] = el.value; if (id === 'slogan' || id === 'cls' || id === 'grp') card3r(); save(); });
+});
+
+/* ---------- tiến độ + kết quả ---------- */
+function prog() {
+  const n = (...a) => a.filter(Boolean).length;
+  return {
+    'tram-1': n(S.t1but, S.t1gam, S.mau, S.mc.t1q != null) / 4,
+    'tram-2': n(S.diagOk, Object.keys(S.tf).length === 4, S.mc.sim1 != null, S.mc.sim2 != null, S.pred) / 5,
+    'tram-3': n(S.mc.sgk != null, S.mc.ai1 != null, S.stepsDone) / 3,
+    'tram-4': n((S.k || {}).n >= 10, (S.k || {}).rate != null, S.mc.predOk != null, S.mc.ai2 != null) / 4,
+    'tram-5': n(S.mc.q1 != null, S.mc.q2 != null, S.mc.q3 != null, S.slogan, S.imp) / 5
+  };
+}
+function rail() {
+  const p = prog(); let tot = 0;
+  $$('.cr').forEach(b => { const v = b.dataset.go === 'ket-qua' ? (tot / 5) : p[b.dataset.go]; if (b.dataset.go !== 'ket-qua') tot += v; b.querySelector('i').style.setProperty('--p', Math.round(v * 100) + '%'); });
+}
+const right = id => S.mc[id] != null && S.mc[id] === MC[id].a;
+function summary() {
+  const [hit, wrong] = stepScore(), k = S.k || {};
+  const tfOk = TF.filter((t, i) => S.tf[i] != null && !!+S.tf[i] === t[1]).length;
+  const q = ['q1', 'q2', 'q3', 'q4'].filter(right).length;
+  $('#sumK').innerHTML = [[`${(S.diagOk ? 2 : 0) + tfOk + (right('sim1') ? 1 : 0) + (right('sim2') ? 1 : 0)}/8`, 'Trạm 2 kiến thức nền'], [`${hit}/5`, 'Trạm 3 tìm lỗi'], [k.rate != null ? fmt(k.rate) + ' %' : '–', 'Trạm 4 tỉ lệ tái chế'], [`${q}/4`, 'Trạm 5 luyện tập']]
+    .map(([b, s]) => `<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+  const L = [];
+  L.push(`NHẬT KÍ KỸ SƯ SÁP – ${S.grp || '(chưa ghi nhóm)'}${S.cls ? ', lớp ' + S.cls : ''}`);
+  L.push(`Trạm 1: ${S.t1but || '–'} cây bút gãy, cụt; ${S.t1gam || '–'} g vụn sáp; màu nhiều nhất: ${S.mau || '–'}.`);
+  L.push(`Trạm 2: sơ đồ ${S.diagOk ? 'đúng' : 'chưa đúng'}; đúng/sai ${tfOk}/4; mô phỏng ${(right('sim1') ? 1 : 0) + (right('sim2') ? 1 : 0)}/2. Dự đoán đồ thị sáp: ${S.pred ? 'hình ' + S.pred + ' (' + PRED[S.pred][0].toLowerCase() + ')' : '–'}. Lí do: ${S.predWhy || '–'}`);
+  L.push(`Trạm 3: kết luận bước đầu về AI: ${S.mc.ai1 != null ? MC.ai1.o[S.mc.ai1] : '–'}. Lí do: ${S.ai1Why || '–'}. Tìm lỗi: đúng ${hit}/5${wrong ? ', nhầm ' + wrong : ''}.`);
+  L.push(`Trạm 4: ${k.n || 0} số đo; sáp chảy từ ${S.m0 || '–'} đến ${S.m1 || '–'} °C; tỉ lệ tái chế ${k.rate != null ? fmt(k.rate) + ' %' : '–'}; tốc độ tăng nhiệt độ trước khi chảy ${k.before != null ? fmt(k.before) : '–'} °C/phút, trong lúc chảy ${k.during != null ? fmt(k.during) : '–'} °C/phút. Dự đoán: ${S.mc.predOk != null ? MC.predOk.o[S.mc.predOk].toLowerCase() : '–'}. Kết luận về AI sau khi đo: ${S.mc.ai2 != null ? MC.ai2.o[S.mc.ai2] : '–'}.${S.sample ? ' (số liệu mẫu)' : ''}`);
+  L.push(`Trạm 5: luyện tập ${q}/4. Thông điệp 3R: “${S.slogan || '–'}”. Cải tiến: đổi ${S.imp || '–'}; ${S.impHow || ''}`);
+  $('#sumT').textContent = L.join('\n\n');
+}
+$('#copy').addEventListener('click', async () => {
+  const m = $('#copyMsg');
+  try { await navigator.clipboard.writeText($('#sumT').textContent); m.textContent = 'Đã sao chép. Mở Padlet của lớp và dán vào cột của nhóm.'; }
+  catch (e) { m.textContent = 'Máy không cho sao chép tự động: hãy chụp màn hình phần kết quả để đăng Padlet.'; }
+});
+$('#reset').addEventListener('click', () => $('#dlg').classList.add('on'));
+$('#dNo').addEventListener('click', () => $('#dlg').classList.remove('on'));
+$('#dYes').addEventListener('click', () => { try { localStorage.removeItem(KEY); } catch (e) {} S = {mc: {}, tf: {}, steps: [], heat: Array(20).fill(''), cool: Array.from({length: 12}, () => ['', ''])}; $('#dlg').classList.remove('on'); boot(); });
+$('#padLink').href = CFG.PADLET_URL; $('#simLink').href = CFG.SIM_URL;
+
+/* ---------- điều hướng ---------- */
+const PAGES = ['tram-1', 'tram-2', 'tram-3', 'tram-4', 'tram-5', 'ket-qua'];
+function go(id) {
+  if (!PAGES.includes(id)) id = 'tram-1';
+  $$('.page').forEach(p => p.classList.toggle('on', p.id === 'p-' + id));
+  $$('.cr').forEach(b => b.setAttribute('aria-current', b.dataset.go === id));
+  if (id === 'tram-3') simSays();
+  if (id === 'tram-4') requestAnimationFrame(draw);
+}
+$('.rail').addEventListener('click', e => { const b = e.target.closest('.cr'); if (!b) return; try { location.hash = b.dataset.go; } catch (er) {} go(b.dataset.go); window.scrollTo({top: 0}); });
+window.addEventListener('hashchange', () => go(location.hash.slice(1)));
+
+function boot() {
+  ['cls', 'grp', 't1but', 't1gam', 'predWhy', 'ai1Why', 'slogan', 'imp', 'impHow'].forEach(id => $('#' + id).value = S[id] ?? '');
+  Object.keys(MC).forEach(mc);
+  paintMau(); chips(); chkDiag(false); paintTF(); paintPred(); simSays(); aiHint();
+  steps(!!S.stepsDone); if (S.stepsDone) chkSteps();
+  loadData(); kpis(); draw(); card3r(); rail(); summary();
+  go(location.hash.slice(1) || 'tram-1');
+}
+boot();
+}
+</script>
+</body>
+</html>
